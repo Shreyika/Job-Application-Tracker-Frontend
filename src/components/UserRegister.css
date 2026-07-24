@@ -1,0 +1,58 @@
+.register-page {
+  min-height: 100vh;
+  padding: 44px 24px;
+  display: grid;
+  place-items: center;
+  background: #f4f7fb;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.register-shell {
+  width: min(1100px, 100%);
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: 1.04fr 0.96fr;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e7ecf5;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(37, 60, 105, 0.12);
+}
+
+.register-showcase { padding: 42px; color: #fff; background: linear-gradient(150deg, #172f73 0%, #2f5ed0 100%); display: flex; flex-direction: column; }
+.showcase-brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 750; letter-spacing: -0.5px; }
+.brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; color: #244bb1; background: #fff; font-size: 16px; }
+.showcase-copy { margin-top: 64px; max-width: 400px; }
+.eyebrow, .panel-kicker { font-size: 11px; font-weight: 800; letter-spacing: 1.35px; }
+.showcase-copy h1 { margin: 14px 0; font-size: clamp(32px, 3vw, 45px); line-height: 1.1; letter-spacing: -1.5px; }
+.showcase-copy p { margin: 0; color: #dbe6ff; font-size: 16px; line-height: 1.6; }
+.showcase-card { margin-top: auto; overflow: hidden; border: 1px solid rgba(255,255,255,.24); border-radius: 18px; background: rgba(255,255,255,.12); box-shadow: 0 14px 30px rgba(11, 29, 83, .25); }
+.showcase-card img { width: 100%; display: block; aspect-ratio: 2.1 / 1; object-fit: cover; }
+.showcase-card-footer { padding: 15px 16px; display: flex; align-items: center; gap: 11px; font-size: 12px; line-height: 1.35; color: #dce7ff; }
+.showcase-card-footer strong { display: block; color: #fff; font-size: 13px; }
+.check-icon { width: 28px; height: 28px; flex: none; display: grid; place-items: center; border-radius: 50%; background: #79d5b1; color: #0a4b3c; font-weight: 900; }
+
+.register-panel { display: grid; place-items: center; padding: 42px; }
+.register-panel-content { width: min(100%, 390px); }
+.panel-kicker { margin: 0 0 12px; color: #315dc9; }
+.register-panel h2 { margin: 0; color: #17213a; font-size: 34px; letter-spacing: -1.25px; }
+.panel-intro { margin: 10px 0 30px; color: #6b7485; font-size: 15px; }
+.register-form { display: grid; gap: 4px; }
+.name-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field-group { min-width: 0; }
+.field-group label { display: block; margin-bottom: 7px; color: #28344d; font-size: 13px; font-weight: 700; }
+.register-form input, .register-form select { width: 100%; height: 48px; border: 1px solid #d8dfeb; border-radius: 9px; padding: 0 13px; color: #1c2942; background: #fff; font: inherit; font-size: 14px; transition: border-color .2s, box-shadow .2s; }
+.register-form input::placeholder { color: #a2aab8; }
+.register-form input:focus, .register-form select:focus { outline: none; border-color: #3868d9; box-shadow: 0 0 0 3px rgba(56, 104, 217, .12); }
+.select-wrap { position: relative; }
+.select-wrap select { appearance: none; padding-right: 38px; cursor: pointer; }
+.select-wrap i { position: absolute; top: 15px; right: 14px; pointer-events: none; color: #5c6678; font-size: 12px; }
+.error { min-height: 16px; margin: 5px 0 4px; color: #d34343; font-size: 11px; }
+.register-btn { width: 100%; height: 50px; margin-top: 8px; border: 0; border-radius: 9px; color: #fff; background: #315ecb; font: inherit; font-size: 15px; font-weight: 750; cursor: pointer; box-shadow: 0 8px 15px rgba(49, 94, 203, .22); transition: transform .2s, background .2s; }
+.register-btn i { margin-left: 9px; }
+.register-btn:hover { background: #244cad; transform: translateY(-1px); }
+.login-prompt { margin: 22px 0 0; color: #70798a; text-align: center; font-size: 13px; }
+.login-prompt a { color: #315ecb; font-weight: 750; text-decoration: none; }
+
+@media (max-width: 760px) { .register-page { padding: 0; place-items: stretch; } .register-shell { min-height: 100vh; grid-template-columns: 1fr; border: 0; border-radius: 0; } .register-showcase { min-height: 310px; padding: 30px 25px; } .showcase-copy { margin-top: 38px; } .showcase-copy h1 { font-size: 31px; } .showcase-card { display: none; } .register-panel { padding: 36px 25px 44px; } }
+@media (max-width: 390px) { .name-fields { grid-template-columns: 1fr; gap: 0; } }
