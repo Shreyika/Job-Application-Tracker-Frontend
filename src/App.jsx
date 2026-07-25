@@ -1,6 +1,8 @@
 import './App.css'
 import Layout from './components/common/Layout'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from './components/Home'
 import UserRegister from './components/pages/Auth/UserRegister'
 import NotFound from './components/NotFound'
@@ -10,6 +12,8 @@ import RecruiterDashboard from './components/pages/Recruiter/RecruiterDashboard'
 import CandidateDashboard from './components/pages/Candidate/CandidateDashboard';
 import CandidateProfile from './components/pages/Candidate/CandidateProfile';
 import RecruiterProfile from './components/pages/Recruiter/RecruiterProfile';
+import AddJobs from './components/pages/Recruiter/AddJobs';
+import JobList from './components/pages/Recruiter/JobList';
 
 
 
@@ -53,6 +57,14 @@ const router=createBrowserRouter([
       {
         path:'recruiter-profile',
         element:<RecruiterProfile/>
+      },
+      {
+        path:'add-job',
+        element:<AddJobs/>
+      },
+      {
+        path:'recruiters/jobs',
+        element:<JobList/>
       },
       {
         //* means if any route excluding the above declared ones

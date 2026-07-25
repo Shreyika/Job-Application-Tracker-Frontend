@@ -5,7 +5,9 @@ import './RecruiterDashboard.css'
 
 function RecruiterDashboard() {
   const { user, logout } = useContext(LoginContext);
+
   const navigate = useNavigate();
+
   const [showJobsMenu, setShowJobsMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const firstName = user?.firstName?.trim() || '';
@@ -56,16 +58,21 @@ function RecruiterDashboard() {
               <i className={`bi bi-chevron-${showJobsMenu ? 'up' : 'down'} nav-chevron`} />
             </button>
 
+            {/* Add New Job */}
             {showJobsMenu && (
               <div className="jobs-menu-actions">
-                <button type="button">
+                <button type="button" onClick={() => navigate("/add-job")}>
                   <i className="bi bi-plus-circle" />
+                  
                   Add New Job
                 </button>
-                <button type="button">
-                  <i className="bi bi-list-ul" />
+                
+              <button
+                  className="btn btn-primary"
+                  onClick={() => navigate("/recruiters/jobs")}
+              >
                   View All Jobs
-                </button>
+              </button>
               </div>
             )}
           </div>
@@ -154,7 +161,10 @@ function RecruiterDashboard() {
             <div>
               <small>Active Jobs</small>
               <b>12</b>
-              <a href="#overview">View all jobs <i className="bi bi-arrow-right" /></a>
+              
+              <Link to="/recruiters/jobs"> View all Jobs <i className="bi bi-arrow-right" />
+               
+            </Link>
             </div>
           </article>
 
