@@ -1,8 +1,7 @@
 import './App.css'
 import Layout from './components/common/Layout'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import Home from './components/Home'
 import UserRegister from './components/pages/Auth/UserRegister'
 import NotFound from './components/NotFound'
@@ -16,7 +15,9 @@ import AddJobs from './components/pages/Recruiter/AddJobs';
 import JobList from './components/pages/Recruiter/JobList';
 import CandidateJobList from './components/pages/Candidate/CandidateJobList';
 import CandidateJobDetails from './components/pages/Candidate/CandidateJobDetails';
-
+import CandidateApplications from './components/pages/Candidate/CandidateApplications';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function ErrorMessage(){
@@ -77,6 +78,10 @@ const router=createBrowserRouter([
           element: <CandidateJobDetails />
       },
       {
+          path: "/candidate-applications",
+          element: <CandidateApplications />
+      },
+      {
         //* means if any route excluding the above declared ones
         path:'*',
         element:<NotFound/>
@@ -92,9 +97,20 @@ function App() {
   return (
     <>
       
+      
+
    <LoginProvider>
       <RouterProvider router={router} />
     </LoginProvider>
+
+    <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnHover
+      />
 
     </>
   )

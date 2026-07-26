@@ -136,7 +136,7 @@ function CandidateJobList() {
                   <button className="btn btn-outline-primary btn-sm">
                     Save
                   </button>
-                  <button onClick={() => navigate(`/candidates/jobdetails/${job.id}`)}>
+                  <button className="btn btn-primary" onClick={() => navigate(`/candidates/jobdetails/${job.id}`)}>
                     View Details
                 </button>
                   

@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { api } from "../../../api";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CandidateJobDetails() {
   const [job, setJob] = useState(null);
+  const [applying, setApplying] = useState(false);
+
 
   const { jobId } = useParams();
   const navigate = useNavigate();
@@ -18,20 +22,34 @@ function CandidateJobDetails() {
     }
   };
 
+  const applyJob = async () => {
+
+  if(applying) return;
+
+  try {
+    setApplying(true);
+
+    await api.post(`/applications/${job.id}`);
+
+    toast.success("Applied successfully!");
+
+    navigate("/candidate-applications");
+
+  } catch(error) {
+
+    //alert("something went wrong");
+    toast.error("This job is already applied");
+
+  } finally {
+    setApplying(false);
+  }
+}
+
   useEffect(() => {
     fetchJobDetails();
   }, [jobId]);
 
-  const applyJob = async () => {
-    try {
-      await api.post(`/applications/${job.id}`);
-      toast.success("Applied successfully!");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Unable to apply for this job."
-      );
-    }
-  };
+  
 
   if (!job) {
     return (
@@ -129,12 +147,12 @@ function CandidateJobDetails() {
             Back to Jobs
           </button>
 
-          <button
-            className="btn btn-success"
+          <button className="btn btn-primary"
+            disabled={applying}
             onClick={applyJob}
-          >
-            Apply Now
-          </button>
+            >
+            {applying ? "Applying..." : "Apply"}
+        </button>
 
         </div>
 
