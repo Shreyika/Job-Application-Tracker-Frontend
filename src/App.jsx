@@ -14,6 +14,8 @@ import CandidateProfile from './components/pages/Candidate/CandidateProfile';
 import RecruiterProfile from './components/pages/Recruiter/RecruiterProfile';
 import AddJobs from './components/pages/Recruiter/AddJobs';
 import JobList from './components/pages/Recruiter/JobList';
+import CandidateJobList from './components/pages/Candidate/CandidateJobList';
+import CandidateJobDetails from './components/pages/Candidate/CandidateJobDetails';
 
 
 
@@ -65,6 +67,14 @@ const router=createBrowserRouter([
       {
         path:'recruiters/jobs',
         element:<JobList/>
+      },
+      {
+        path:'candidates/joblist',
+        element:<CandidateJobList/>
+      },
+      {
+          path: "/candidates/jobdetails/:jobId",
+          element: <CandidateJobDetails />
       },
       {
         //* means if any route excluding the above declared ones

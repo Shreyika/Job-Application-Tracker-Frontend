@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Links, useNavigate } from 'react-router-dom'
 import { LoginContext } from "../../../context/LoginContext";
 import './CandidateDashboard.css'
 
@@ -36,6 +36,7 @@ function CandidateDashboard() {
     { title: 'Product Designer', company: 'Design Studio', status: 'Applied', date: 'May 14, 2024', tone: 'applied' },
   ];
 
+  //recomended jobs
   const jobs = [
     ['Frontend Developer', 'Innovative Pvt. Ltd.', 'Pune, India'],
     ['UI Developer', 'Web Creators', 'Mumbai, India'],
@@ -82,17 +83,109 @@ function CandidateDashboard() {
           </section>
         </div>
 
-        <div className="candidate-bottom-grid">
-          <section className="list-card card-surface"><CardTitle title="Applications" />
-            <div className="application-list">{applications.map((application) => <article className="application-row" key={application.title}><i className="bi bi-arrow-right-short" /><div><strong>{application.title}</strong><small>{application.company}</small></div><span className={`status-pill ${application.tone}`}>{application.status}</span><time>{application.date}</time></article>)}</div>
-          </section>
+          {/* Bottom Section */}
+<div className="candidate-bottom-grid">
 
-          <section className="list-card card-surface"><CardTitle title="Recommended Jobs" />
-            <div className="job-list">{jobs.map(([title, company, location]) => <article className="job-row" key={title}><div><strong>{title}</strong><small>{company}</small></div><span><i className="bi bi-geo-alt" />{location}</span><span>Full-time</span><button aria-label={`Save ${title}`}><i className="bi bi-bookmark" /></button></article>)}</div>
-          </section>
+  {/* Applications */}
+  <section className="list-card card-surface">
+    <div className="card-title">
+      <h2>Applications</h2>
+      <a href="#overview">View all</a>
+    </div>
 
-          <section className="strength-card card-surface"><h2>Profile Strength</h2><div className="strength-overview"><div className="progress-ring"><b>85%</b></div><p><strong>Great! Your profile is</strong><br />almost complete.</p></div><ul className="strength-list"><li><i className="bi bi-check-lg" />Personal Information</li><li><i className="bi bi-check-lg" />Work Experience</li><li><i className="bi bi-check-lg" />Education</li><li><i className="bi bi-check-lg" />Skills</li><li className="pending"><i className="bi bi-circle" />Resume Upload</li></ul><i className="bi bi-clipboard-check strength-illustration" /></section>
-        </div>
+    <div className="application-list">
+      {applications.map((application) => (
+        <article className="application-row" key={application.title}>
+          <i className="bi bi-arrow-right-short"></i>
+
+          <div>
+            <strong>{application.title}</strong>
+            <small>{application.company}</small>
+          </div>
+
+          <span className={`status-pill ${application.tone}`}>
+            {application.status}
+          </span>
+
+          <time>{application.date}</time>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  {/* Recommended Jobs */}
+  <section className="list-card card-surface">
+    <div className="card-title">
+      <h2>Recommended Jobs</h2>
+      <Link to="/candidates/joblist">View all</Link>
+    </div>
+
+    <div className="job-list">
+      {jobs.map(([title, company, location]) => (
+        <article className="job-row" key={title}>
+          <div>
+            <strong>{title}</strong>
+            <small>{company}</small>
+          </div>
+
+          <span>
+            <i className="bi bi-geo-alt"></i> {location}
+          </span>
+
+          <span>Full-time</span>
+
+          <button aria-label={`Save ${title}`}>
+            <i className="bi bi-bookmark"></i>
+          </button>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  {/* Profile Strength */}
+  <section className="strength-card card-surface">
+    <h2>Profile Strength</h2>
+
+    <div className="strength-overview">
+      <div className="progress-ring">
+        <b>85%</b>
+      </div>
+
+      <p>
+        <strong>Great! Your profile is</strong>
+        <br />
+        almost complete.
+      </p>
+    </div>
+
+    <ul className="strength-list">
+      <li>
+        <i className="bi bi-check-lg"></i>
+        Personal Information
+      </li>
+      <li>
+        <i className="bi bi-check-lg"></i>
+        Work Experience
+      </li>
+      <li>
+        <i className="bi bi-check-lg"></i>
+        Education
+      </li>
+      <li>
+        <i className="bi bi-check-lg"></i>
+        Skills
+      </li>
+      <li className="pending">
+        <i className="bi bi-circle"></i>
+        Resume Upload
+      </li>
+    </ul>
+
+    <i className="bi bi-clipboard-check strength-illustration"></i>
+  </section>
+
+</div>
+
       </section>
     </main>
   )
@@ -102,8 +195,8 @@ function Metric({ icon, label, value, tone }) {
   return <article className="metric-card card-surface"><span className={`metric-icon ${tone}`}><i className={`bi ${icon}`} /></span><strong>{label}</strong><b>{value}</b><a href="#overview">View all <i className="bi bi-arrow-right" /></a></article>
 }
 
-function CardTitle({ title }) {
-  return <div className="card-title"><h2>{title}</h2><a href="#overview">View all</a></div>
-}
+// function CardTitle({ title }) {
+//   return <div className="card-title"><h2>{title}</h2><a href="#overview">View all</a></div>
+// }
 
 export default CandidateDashboard
