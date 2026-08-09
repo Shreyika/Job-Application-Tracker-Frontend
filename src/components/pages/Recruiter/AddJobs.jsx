@@ -2,6 +2,8 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { api } from "../../../api";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 
 function AddJobs() {
@@ -29,6 +31,12 @@ function AddJobs() {
 
   return (
     <div className="container mt-5">
+      <button
+                className="btn btn-secondary mb-4"
+                onClick={() => navigate(-1)}
+            >
+                ← Back
+            </button>
   <div className="row justify-content-center">
     <div className="col-md-8">
       <div className="card shadow">

@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import jobHero from "../../../assets/job-hero.svg";
 import { api } from "../../../api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserRegister() {
 
@@ -13,40 +15,56 @@ function UserRegister() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm();
 
+ 
+
   const onSubmit = async (data) => {
-    
-    console.log(data);
-    const {role}=data;
-    delete data.role;
-    try {
-      const response = await api.post(`/users?role=${role}`, data);
-      console.log(response);
-      // const userId = response.data.id;
+  console.log(data);
 
-      // if (data.role === "ROLE_RECRUITER") {
-      //   navigate(`/recruiter-dashboard/${userId}`);
-      // }
+  const { role, confirmPassword, ...userData } = data;
 
-      // if (data.role === "ROLE_CANDIDATE") {
-      //   navigate(`/candidate-dashboard/${userId}`);
-      // }
+  try {
+    const response = await api.post(
+      `/users?role=${role}`,
+      userData
+    );
 
-      alert("Registration successful");
+    console.log(response);
+
+    toast.success("Registration successful!");
+
+    setTimeout(() => {
       navigate("/userlogin");
-    } catch (error) {
-      alert("Something went wrong");
-      console.log("Error", error);
-    }
+    }, 1500);
 
-    //const userId=response.data.id;
+  } catch (error) {
+    console.log("Error", error);
 
-  };
+    const message =
+      error.response?.data?.message ||
+      error.response?.data ||
+      "Something went wrong during registration.";
+
+    toast.error(message);
+  }
+};
+
 
   return (
     <main className="register-page">
+
+    <ToastContainer
+      position="top-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      pauseOnHover
+    />
+
       <section className="register-shell" aria-label="Create an account">
         <aside className="register-showcase">
           <div className="showcase-brand">
@@ -98,14 +116,28 @@ function UserRegister() {
 
               <div className="field-group">
                 <label htmlFor="password">Password</label>
-                <input id="password" type="password" placeholder="Create a password" {...register("password", { required: "Password is required", minLength: { value: 6, message: "Use at least 6 characters" } })} />
+                <input id="password" type="password" placeholder="Create a password" {...register("password", { required: "Password is required", pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/, message: "Password must be at least 6 characters with one uppercase, one lowercase, and one special character" } })} />
                 <p className="error">{errors.password?.message}</p>
               </div>
 
-              <div className="field-group">
-                <label htmlFor="password">Confirm Password</label>
-                <input id="confirmPassword" type="password" placeholder="Confirm password" {...register("confirmPassword", { required: "Confirm Password is required", minLength: { value: 6, message: "Use at least 6 characters" } })} />
-                <p className="error">{errors.confirmPassword?.message}</p>
+            <div className="field-group">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm password"
+                  {...register("confirmPassword", {
+                    required: "Confirm Password is required",
+
+                    validate: (value) =>
+                      value === getValues("password") || "Passwords do not match",
+                  })}
+                />
+
+                <p className="error">
+                  {errors.confirmPassword?.message}
+                </p>
               </div>
 
               <div className="field-group">

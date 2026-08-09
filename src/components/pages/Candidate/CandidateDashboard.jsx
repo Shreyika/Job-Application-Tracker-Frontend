@@ -1,10 +1,19 @@
-import { useContext } from 'react'
+import { useContext, useState , useEffect} from 'react'
 import { Link, Links, useNavigate } from 'react-router-dom'
 import { LoginContext } from "../../../context/LoginContext";
 import './CandidateDashboard.css'
+import { api } from '../../../api';
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CandidateDashboard() {
+
   const { user, logout } = useContext(LoginContext);
+
+  const [allapplications, setApplications]=useState([]);
+  const [jobs, setJobs] = useState([]);
+
   const navigate = useNavigate();
 
   const firstName = user?.firstName?.trim() || '';
@@ -18,12 +27,10 @@ function CandidateDashboard() {
     navigate('/userlogin', { replace: true });
   };
 
-   
-
   const navigationItems = [
     ['bi-grid-1x2', 'Dashboard', '/candidate-dashboard'],
-    ['bi-person', 'Profile', '/candidate-profile'],
-    ['bi-file-earmark-text', 'My Applications'],
+    ['bi-person', 'Profile', `/candidate-profile/${user.id}`],
+    ['bi-file-earmark-text', 'My Applications', '/candidate-applications'],
     ['bi-heart', 'Saved Jobs'],
     ['bi-bell', 'Alerts'],
     ['bi-envelope', 'Messages'],
@@ -36,163 +43,247 @@ function CandidateDashboard() {
     { title: 'Product Designer', company: 'Design Studio', status: 'Applied', date: 'May 14, 2024', tone: 'applied' },
   ];
 
+  const myApplications = async ()=>{
+          try { 
+        const response = await api.get("/applications/my");
+        //console.log(response.data);
+        setApplications(response.data || []);
+    } catch (error) {
+        //console.log(error);
+        setApplications([]);
+    }
+          
+  }
+    const fetchJobs = async () => {
+        try {
+            const response = await api.get("/jobs");
+            setJobs(response.data);
+        } catch (error) {
+            toast.error("Something went wrong while fetching jobs.");
+        }
+    };
+
+    useEffect(() => {
+      myApplications();
+      fetchJobs();
+    }, []);
+      
+
   //recomended jobs
-  const jobs = [
-    ['Frontend Developer', 'Innovative Pvt. Ltd.', 'Pune, India'],
-    ['UI Developer', 'Web Creators', 'Mumbai, India'],
-    ['React Developer', 'NextGen Labs', 'Bangalore, India'],
-  ];
+  // const jobs = [
+  //   ['Frontend Developer', 'Innovative Pvt. Ltd.', 'Pune, India'],
+  //   ['UI Developer', 'Web Creators', 'Mumbai, India'],
+  //   ['React Developer', 'NextGen Labs', 'Bangalore, India'],
+  // ];
 
-  return (
-    <main className="candidate-portal">
-      <aside className="candidate-sidebar" aria-label="Candidate portal navigation">
-        <Link to="/candidate-dashboard" className="portal-brand"><i className="bi bi-briefcase" /> <span>Candidate Portal</span></Link>
-        <nav className="portal-nav">
-          {navigationItems.map(([icon, label, path]) => path ? (
-            <Link key={label} to={path} className={`portal-nav-item${label === 'Dashboard' ? ' active' : ''}`}>
-              <i className={`bi ${icon}`} />{label}
-            </Link>
-          ) : (
-            <span key={label} className="portal-nav-item muted"><i className={`bi ${icon}`} />{label}</span>
-          ))}
-        </nav>
-        <button className="portal-logout" onClick={handleLogout}>
-            <i className="bi bi-box-arrow-right" />
-            Logout
+  
+    return (
+  <>
+    <section className="candidate-content">
+
+      <header className="candidate-mobile-header">
+        <span className="portal-brand">
+          <i className="bi bi-briefcase" /> Candidate Portal
+        </span>
+
+        <button onClick={handleLogout}>
+          <i className="bi bi-box-arrow-right"></i>
         </button>
-      </aside>
+      </header>
 
-      <section className="candidate-content">
-        <header className="candidate-mobile-header"><span className="portal-brand"><i className="bi bi-briefcase" /> Candidate Portal</span><button onClick={handleLogout} aria-label="Log out"><i className="bi bi-box-arrow-right" /></button></header>
-        <div className="candidate-top-grid">
-          <section className="profile-summary card-surface">
-            <div className="profile-avatar" aria-label={`${displayName} avatar`}>{initials}</div>
-            <div className="profile-details">
-              <div className="profile-heading"><h1>{displayName}</h1><span className="profile-complete">Profile Complete <b>85%</b></span></div>
-              <p><i className="bi bi-envelope" />{email}</p>
-              <p className="profile-meta"><span><i className="bi bi-telephone" />+91 98765 43210</span><span><i className="bi bi-geo-alt" />Pune, India</span></p>
-              <div className="profile-actions"><button className="outline-button">View Public Profile</button><Link to="/candidate-profile" className="solid-button">Edit Profile</Link></div>
+      <div className="candidate-top-grid">
+        <section className="profile-summary card-surface">
+          <div className="profile-avatar">
+            {initials}
+          </div>
+
+          <div className="profile-details">
+            <div className="profile-heading">
+              <h1>{displayName}</h1>
+
+              <span className="profile-complete">
+                Profile Complete <b>85%</b>
+              </span>
             </div>
-          </section>
 
-          <section className="metrics-grid" aria-label="Candidate statistics">
-            <Metric icon="bi-briefcase-fill" label="Applications" value="8" tone="blue" />
-            <Metric icon="bi-calendar-event" label="Interviews" value="2" tone="purple" />
-            <Metric icon="bi-heart-fill" label="Saved Jobs" value="5" tone="coral" />
-            <Metric icon="bi-bell" label="Alerts" value="3" tone="amber" />
-          </section>
-        </div>
+            <p>
+              <i className="bi bi-envelope" />
+              {email}
+            </p>
 
-          {/* Bottom Section */}
-<div className="candidate-bottom-grid">
+            <p className="profile-meta">
+              <span>
+                <i className="bi bi-telephone" />
+                +91 98765 43210
+              </span>
 
-  {/* Applications */}
-  <section className="list-card card-surface">
-    <div className="card-title">
-      <h2>Applications</h2>
-      <a href="#overview">View all</a>
-    </div>
+              <span>
+                <i className="bi bi-geo-alt" />
+                Pune, India
+              </span>
+            </p>
 
-    <div className="application-list">
-      {applications.map((application) => (
-        <article className="application-row" key={application.title}>
-          <i className="bi bi-arrow-right-short"></i>
-
-          <div>
-            <strong>{application.title}</strong>
-            <small>{application.company}</small>
+            <div className="profile-actions">
+              <Link
+                to={`/candidate-profile/${user.id}`}
+                className="solid-button"
+              >
+                Edit Profile
+              </Link>
+            </div>
           </div>
+        </section>
 
-          <span className={`status-pill ${application.tone}`}>
-            {application.status}
-          </span>
+        <section className="metrics-grid">
 
-          <time>{application.date}</time>
-        </article>
-      ))}
-    </div>
-  </section>
+          <Metric
+            icon="bi-briefcase-fill"
+            label="Applications"
+            value={allapplications.length}
+            tone="blue"
+            link="/candidate-applications"
+            linkText="View Applications"
+          />
 
-  {/* Recommended Jobs */}
-  <section className="list-card card-surface">
-    <div className="card-title">
-      <h2>Recommended Jobs</h2>
-      <Link to="/candidates/joblist">View all</Link>
-    </div>
+          <Metric
+            icon="bi-calendar-event"
+            label="Interviews"
+            value="2"
+            tone="purple"
+            link="/candidate-interviews"
+            linkText="View Interviews"
+          />
 
-    <div className="job-list">
-      {jobs.map(([title, company, location]) => (
-        <article className="job-row" key={title}>
-          <div>
-            <strong>{title}</strong>
-            <small>{company}</small>
-          </div>
+          <Metric
+            icon="bi-heart-fill"
+            label="Saved Jobs"
+            value="5"
+            tone="coral"
+            link="/saved-jobs"
+            linkText="Saved Jobs"
+          />
 
-          <span>
-            <i className="bi bi-geo-alt"></i> {location}
-          </span>
+          <Metric
+            icon="bi-bell"
+            label="Alerts"
+            value="3"
+            tone="amber"
+            link="/alerts"
+            linkText="View Alerts"
+          />
 
-          <span>Full-time</span>
-
-          <button aria-label={`Save ${title}`}>
-            <i className="bi bi-bookmark"></i>
-          </button>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  {/* Profile Strength */}
-  <section className="strength-card card-surface">
-    <h2>Profile Strength</h2>
-
-    <div className="strength-overview">
-      <div className="progress-ring">
-        <b>85%</b>
+        </section>
       </div>
 
-      <p>
-        <strong>Great! Your profile is</strong>
-        <br />
-        almost complete.
-      </p>
-    </div>
+      <div className="candidate-bottom-grid">
 
-    <ul className="strength-list">
-      <li>
-        <i className="bi bi-check-lg"></i>
-        Personal Information
-      </li>
-      <li>
-        <i className="bi bi-check-lg"></i>
-        Work Experience
-      </li>
-      <li>
-        <i className="bi bi-check-lg"></i>
-        Education
-      </li>
-      <li>
-        <i className="bi bi-check-lg"></i>
-        Skills
-      </li>
-      <li className="pending">
-        <i className="bi bi-circle"></i>
-        Resume Upload
-      </li>
-    </ul>
+        <section className="list-card card-surface">
+          <div className="card-title">
+            <h2>Applications</h2>
+            <Link to="/candidate-applications">View all</Link>
+          </div>
 
-    <i className="bi bi-clipboard-check strength-illustration"></i>
-  </section>
+          <div className="application-list">
+            {applications.map((application) => (
+              <article className="application-row" key={application.title}>
+                <i className="bi bi-arrow-right-short"></i>
 
-</div>
+                <div>
+                  <strong>{application.title}</strong>
+                  <small>{application.company}</small>
+                </div>
 
-      </section>
-    </main>
-  )
+                <span className={`status-pill ${application.tone}`}>
+                  {application.status}
+                </span>
+
+                <time>{application.date}</time>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="list-card card-surface">
+          <div className="card-title">
+            <h2>Recommended Jobs</h2>
+            <Link to="/candidates/joblist">View all</Link>
+          </div>
+
+          <div className="job-list">
+            {jobs.slice(0,5).map((j)=>(
+              <article className="job-row" key={j.id}>
+                <div>
+                  <strong>{j.jobRole}</strong>
+                  <small>{j.companyName}</small>
+                  <small>
+                    <i className="bi bi-geo-alt"></i>
+                    {j.jobLocation}
+                  </small>
+                </div>
+
+                <button>
+                  <i className="bi bi-bookmark"></i>
+                </button>
+              </article>
+            ))}
+          </div>
+
+        </section>
+
+        <section className="strength-card card-surface">
+          <h2>Profile Strength</h2>
+
+          <div className="strength-overview">
+            <div className="progress-ring">
+              <b>85%</b>
+            </div>
+
+            <p>
+              <strong>Great! Your profile is</strong>
+              <br />
+              almost complete.
+            </p>
+          </div>
+
+          <ul className="strength-list">
+            <li><i className="bi bi-check-lg"></i>Personal Information</li>
+            <li><i className="bi bi-check-lg"></i>Work Experience</li>
+            <li><i className="bi bi-check-lg"></i>Education</li>
+            <li><i className="bi bi-check-lg"></i>Skills</li>
+
+            <li className="pending">
+              <i className="bi bi-circle"></i>
+              Resume Upload
+            </li>
+          </ul>
+
+          <i className="bi bi-clipboard-check strength-illustration"></i>
+        </section>
+
+      </div>
+
+    </section>
+  </>
+);
+
+
 }
 
-function Metric({ icon, label, value, tone }) {
-  return <article className="metric-card card-surface"><span className={`metric-icon ${tone}`}><i className={`bi ${icon}`} /></span><strong>{label}</strong><b>{value}</b><a href="#overview">View all <i className="bi bi-arrow-right" /></a></article>
+function Metric({ icon, label, value, tone, link, linkText }) {
+  return (
+    <article className="metric-card card-surface">
+      <span className={`metric-icon ${tone}`}>
+        <i className={`bi ${icon}`}></i>
+      </span>
+
+      <strong>{label}</strong>
+      <b>{value}</b>
+
+      <Link to={link}>
+        {linkText} <i className="bi bi-arrow-right"></i>
+      </Link>
+    </article>
+  );
 }
 
 // function CardTitle({ title }) {

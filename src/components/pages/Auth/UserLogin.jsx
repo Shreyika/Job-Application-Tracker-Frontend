@@ -5,6 +5,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useContext } from "react";
 import { api } from "../../../api";
 import { LoginContext } from "../../../context/LoginContext";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserLogin() {
   const navigate = useNavigate();
@@ -29,16 +32,26 @@ function UserLogin() {
         navigate(`/recruiter-dashboard`);
       } else if (role == "ROLE_CANDIDATE") {
         navigate(`/candidate-dashboard`);
+      } else if (role=="ROLE_ADMIN")
+      {
+        navigate(`/admin-dashboard`);
       }
       
     } catch (error) {
-      console.log(error);
+      console.log("Login Error:", error);
+
+      const message =
+        error.response?.data ||
+        "Invalid email or password";
+
+      toast.error(message);
     }
 
   };
 
   return (
     <main className="login-page">
+      <ToastContainer />
       <div className="login-shell">
 
       <section className="login-showcase">

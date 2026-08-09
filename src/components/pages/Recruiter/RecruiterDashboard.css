@@ -7,3 +7,48 @@
 @media (max-width: 1120px) { .recruiter-metrics, .recruiter-lower-grid { grid-template-columns: 1fr; }.recruiter-lower-grid { flex: none; }.recruiter-lower-grid > article, .overview-card, .interview-card { grid-column: auto; height: auto; min-height: 255px; }.overview-card { min-height: 300px !important; } }
 @media (max-width: 780px) { .recruiter-sidebar { display: none; }.recruiter-content { padding: 0 14px 14px; }.recruiter-header { display: none; }.recruiter-mobile-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 2px; color: var(--recruiter-navy); }.recruiter-mobile-header button { border: 0; color: var(--recruiter-navy); background: transparent; font-size: 21px; }.recruiter-metrics, .recruiter-lower-grid { grid-template-columns: 1fr; }.overview-card, .interview-card { grid-column: auto; } }
 @media (max-width: 480px) { .recruiter-metric { gap: 11px; padding: 14px 10px; }.recruiter-metric-icon { width: 34px; height: 34px; font-size: 17px; }.recruiter-metric b { font-size: 18px; }.recent-row { grid-template-columns: 29px 1fr auto; }.recent-row .recruiter-status { display: none; }.applications-chart { min-height: 185px; }.chart-days text { font-size: 8px; } }
+
+/* Add Job button */
+.add-job-button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: white;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 14px 20px;
+  margin: 4px 0;
+
+  border-radius: 8px;
+}
+
+/* Icon */
+.add-job-button i {
+  font-size: 20px;
+  min-width: 22px;
+}
+
+/* Hover */
+.add-job-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+}
+
+/* When profile is being checked */
+.add-job-button:disabled {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
+}
+
+/* Remove browser focus/button outline */
+.add-job-button:focus {
+  outline: none;
+  box-shadow: none;
+}

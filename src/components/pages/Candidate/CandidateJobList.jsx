@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../../api";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 function CandidateJobList() {
@@ -20,6 +22,8 @@ function CandidateJobList() {
       toast.error("Something went wrong while fetching jobs.");
     }
   };
+
+  
 
   useEffect(() => {
     fetchJobs();
@@ -46,6 +50,13 @@ function CandidateJobList() {
 
   return (
     <div className="container mt-4">
+
+    <button
+        className="btn btn-outline-secondary mb-4"
+        onClick={() => navigate(-1)}
+      >
+        ← Back
+      </button>
 
       {/* Filters */}
       <div className="row mb-4">
@@ -133,7 +144,7 @@ function CandidateJobList() {
                 </div>
 
                 <div className="card-footer bg-white border-0 d-flex justify-content-between">
-                  <button className="btn btn-outline-primary btn-sm">
+                  <button className="btn btn-outline-primary btn-sm" onClickCapture={()=>navigate("/candidates/savedjobs")}>
                     Save
                   </button>
                   <button className="btn btn-primary" onClick={() => navigate(`/candidates/jobdetails/${job.id}`)}>

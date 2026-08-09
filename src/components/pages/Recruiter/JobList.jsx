@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { api } from '../../../api';
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import * as bootstrap from "bootstrap";
+import { useNavigate } from "react-router-dom";
 
 
 function JobList() {
@@ -12,6 +15,7 @@ function JobList() {
     const [showModal, setShowModal] = useState(false);
 
     const{register, handleSubmit, reset, formState: { errors },}=useForm();
+    const navigate = useNavigate();
 
     //  To fetch jobs
     const fetchJobs = async ()=>{
@@ -57,7 +61,16 @@ function JobList() {
     },[]);
 
   return (
-     <div>
+     <div className="container mt-4">
+
+
+    <button
+                className="btn btn-secondary mb-4"
+                onClick={() => navigate(-1)}
+            >
+                ← Back
+            </button>
+
       <h2>Total Jobs :{jobs && jobs.length}</h2>
 
     
@@ -275,29 +288,40 @@ function JobList() {
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                       onClick={() => {
-                        setJobId(j.id); // step 2
+                        setJobId(j.id);
+
                         reset({
-                        jobRole: j.jobRole,
-                        companyName: j.companyName,
-                        jobDescription: j.jobDescription,
-                        jobLocation: j.jobLocation,
-                        jobType: j.jobType,
-                        ctcMin: j.ctcMin,
-                        ctcMax: j.ctcMax,
-                        jobStatus: j.jobStatus,
-                        deadlineToApply: j.deadlineToApply,
-                        experienceRequired: j.experienceRequired,
-                        vacancy: j.vacancy,
+                          jobRole: j.jobRole,
+                          companyName: j.companyName,
+                          jobDescription: j.jobDescription,
+                          jobLocation: j.jobLocation,
+                          jobType: j.jobType,
+                          ctcMin: j.ctcMin,
+                          ctcMax: j.ctcMax,
+                          jobStatus: j.jobStatus,
+                          deadlineToApply: j.deadlineToApply,
+                          experienceRequired: j.experienceRequired,
+                          vacancy: j.vacancy,
                         });
                       }}
                     >
                       Update
                     </button>
+
                     <button
                       className="btn btn-danger m-2"
                       onClick={() => deleteJob(j.id)}
                     >
                       Delete
+                    </button>
+
+                    <button
+                      className="btn btn-primary m-2"
+                      onClick={() =>
+                        navigate(`/recruiter/jobs/${j.id}/applications`)
+                      }
+                    >
+                      View Applications
                     </button>
                   </td>
                 </tr>

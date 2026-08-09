@@ -9,10 +9,16 @@ function Layout() {
 
   return (
     <div>
-        {!isPortal && <Navbar/>}
+        {/* {!isPortal && <Navbar/>}
         <Outlet/>
-        {!isPortal && <Footer/>}
+        {!isPortal && <Footer/>} */}
 
+         {/* <Navbar />
+      <Outlet />
+      <Footer /> */}
+    <Navbar />
+            <Outlet />
+            <Footer />
         
 
     </div>

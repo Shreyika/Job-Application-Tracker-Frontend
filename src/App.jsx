@@ -18,6 +18,12 @@ import CandidateJobDetails from './components/pages/Candidate/CandidateJobDetail
 import CandidateApplications from './components/pages/Candidate/CandidateApplications';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RecruiterViewApplications from './components/pages/Recruiter/RecruiterViewApplications';
+import CandidateLayout from './components/common/candidateNav/CandidateLayout';
+import RecruiterLayout from './components/common/recruiterNav/RecruiterLayout';
+import CandidateSaveJobs from './components/pages/Candidate/CandidateSaveJobs';
+import AdminDashboard from './components/pages/Admin/AdminDashboard';
+import AdminLayout from './components/common/adminNav/AdminLayout';
 
 
 function ErrorMessage(){
@@ -26,70 +32,115 @@ function ErrorMessage(){
   </>
 }
 
-const router=createBrowserRouter([
+const router = createBrowserRouter([
+  // Public pages
   {
-    path:'/',
-    element:<Layout/>,
-    errorElement:<ErrorMessage/>,
-    children:[
+    element: <Layout />,
+    children: [
       {
-        index:true,
-        element:<Home/>
+        path: "/",
+        element: <Home />,
       },
       {
-        path:'userregister',
-        element:<UserRegister/>,
-        // children:[] //for url - register/to route anywhere else - in this case we will write routing and outlet in register.jsx 
+        path: "/userlogin",
+        element: <UserLogin />,
       },
       {
-        path:'userlogin',
-        element:<UserLogin/>
+        path: "/userregister",
+        element: <UserRegister />,
       },
-      {
-        path:'recruiter-dashboard',
-        element:<RecruiterDashboard/>
-      },
-      {
-        path:'candidate-dashboard',
-        element:<CandidateDashboard/>
-      },
-      {
-        path:'candidate-profile',
-        element:<CandidateProfile/>
-      },
-      {
-        path:'recruiter-profile',
-        element:<RecruiterProfile/>
-      },
-      {
-        path:'add-job',
-        element:<AddJobs/>
-      },
-      {
-        path:'recruiters/jobs',
-        element:<JobList/>
-      },
-      {
-        path:'candidates/joblist',
-        element:<CandidateJobList/>
-      },
-      {
-          path: "/candidates/jobdetails/:jobId",
-          element: <CandidateJobDetails />
-      },
-      {
-          path: "/candidate-applications",
-          element: <CandidateApplications />
-      },
-      {
-        //* means if any route excluding the above declared ones
-        path:'*',
-        element:<NotFound/>
-      },
-      
     ],
-  }
-])
+  },
+
+  // Candidate pages
+ {
+  element: <CandidateLayout />,
+  children: [
+    {
+      path: "/candidate-dashboard",
+      element: <CandidateDashboard />
+    },
+    {
+      path: "/candidate-profile/:userId",
+      element: <CandidateProfile />
+    },
+    {
+      path: "/candidate-applications",
+      element: <CandidateApplications />
+    },
+    {
+      path: "/candidates/joblist",
+      element: <CandidateJobList />
+    },
+    {
+      path: "/candidates/jobdetails/:jobId",
+      element: <CandidateJobDetails />
+    },
+    {
+      path: "/candidates/savedjobs",
+      element: <CandidateSaveJobs />
+    }
+  ]
+},
+
+ {
+  element: <RecruiterLayout />,
+  children: [
+    {
+      path: "/recruiter-dashboard",
+      element: <RecruiterDashboard />
+    },
+    {
+      path: "/recruiter-profile",
+      element: <RecruiterProfile />
+    },
+    {
+      path: "/add-job",
+      element: <AddJobs />
+    },
+    {
+      path: "/recruiters/jobs",
+      element: <JobList />
+    },
+    {
+      path: "/recruiter/jobs/:jobId/applications",
+      element: <RecruiterViewApplications />
+    }
+  ]
+},
+
+//admin
+{
+  
+  element: <AdminLayout />,
+  children: [
+    {
+      path: "/admin-dashboard",
+      element: <AdminDashboard />
+    },
+
+    // later
+    // {
+    //   path: "users",
+    //   element: <AdminUsers />
+    // },
+
+    // {
+    //   path: "jobs",
+    //   element: <AdminJobs />
+    // },
+
+    // {
+    //   path: "applications",
+    //   element: <AdminApplications />
+    // }
+  ]
+},
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+]);
 
 function App() {
   
